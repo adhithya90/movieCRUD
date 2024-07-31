@@ -55,4 +55,10 @@ class MovieViewModel @Inject constructor(private val repository: MovieRepository
             repository.updateMovie(movie)
         }
     }
+
+    fun deleteMovie(movie: Movie) {
+        viewModelScope.launch {
+            repository.deleteMovie(movie)
+        }
+    }
 }

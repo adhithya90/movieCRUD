@@ -20,9 +20,8 @@ import androidx.compose.ui.unit.dp
 fun MinimalInputField(
     value: String,
     onValueChange: (String) -> Unit,
-    onUpdate: (String) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: String = "Add your note",
+    placeholder: String = "Add a movie",
     textColor: Color = Color.White,
     cursorColor: Color = Color.Yellow
 ) {
@@ -46,7 +45,7 @@ fun MinimalInputField(
                         Text(
                             text = placeholder,
                             color = textColor.copy(alpha = 0.5f),
-                            style = TextStyle(fontFamily = FontFamily.Monospace) // For a minimal feel
+                            style = TextStyle(fontFamily = FontFamily.Monospace)
                         )
                     }
                     innerTextField()

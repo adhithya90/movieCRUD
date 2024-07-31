@@ -30,34 +30,46 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.adhi.moviecrud.model.Movie
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MovieListView(movies: List<Movie>) {
+fun MovieListView(navController: NavController, movies: List<Movie>) {
     Column() {
         TopAppBar(title = {
             Text(text = "Home")
         })
 
         LazyColumn {
-            items(movies.size) {
-                MovieCard(movies[it])
-                HorizontalDivider()
+            items(movies.size) { movie ->
+                MovieCard(
+                    movie = movies[movie],
+                    onEditClick = { navController.navigate("edit/${movies[movie].id}") },
+                    onDeleteClick = { })
+                HorizontalDivider(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    color = Color.White.copy(alpha = 0.1f)
+                )
             }
         }
     }
 }
 
 @Composable
-fun MovieCard(movie: Movie) {
+fun MovieCard(
+    movie: Movie,
+    onEditClick: (Movie) -> Unit,
+    onDeleteClick: (Movie) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable {  }
+            .clickable { onEditClick(movie) }
             .padding(20.dp)
     ) {
         Text(text = movie.title)

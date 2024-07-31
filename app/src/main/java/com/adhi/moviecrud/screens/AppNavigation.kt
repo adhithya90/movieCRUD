@@ -13,9 +13,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.adhi.moviecrud.components.BottomNavigation
 import com.adhi.moviecrud.navigation.MovieNavigation
 
@@ -28,7 +30,9 @@ fun AppNavigation(movieViewModel: MovieViewModel) {
         bottomBar = { BottomNavigation(navController) }
     ) { innerPadding ->
         Surface(
-            modifier = Modifier.fillMaxSize().padding(innerPadding)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
         ) {
             val movies = movieViewModel.movieList.collectAsState().value
             NavHost(
@@ -37,10 +41,21 @@ fun AppNavigation(movieViewModel: MovieViewModel) {
 
             ) {
                 composable(MovieNavigation.Home.route) {
-                    MovieListView(movies = movies)
+                    MovieListView(navController, movies = movies)
                 }
                 composable(MovieNavigation.Add.route) {
                     AddNewMovie(movieViewModel)
+                }
+                composable(
+                    MovieNavigation.Edit.route, arguments = listOf(
+                        navArgument("id") {
+                            type = NavType.IntType
+                        }
+                    )
+                ) { navBackStackEntry ->
+                    val movieID = navBackStackEntry.arguments!!.getInt("id")
+                    MovieEditScreen(navController, movieID, movieViewModel)
+
                 }
 
             }

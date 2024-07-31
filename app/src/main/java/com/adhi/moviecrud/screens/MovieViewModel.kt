@@ -45,4 +45,14 @@ class MovieViewModel @Inject constructor(private val repository: MovieRepository
             }
         }
     }
+
+    fun getMovie(id: Int): Movie? {
+        return movieList.value.find { it.id == id }
+    }
+
+    fun updateMovie(movie: Movie) {
+        viewModelScope.launch {
+            repository.updateMovie(movie)
+        }
+    }
 }

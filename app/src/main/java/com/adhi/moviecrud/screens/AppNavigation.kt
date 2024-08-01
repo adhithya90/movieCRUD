@@ -36,7 +36,7 @@ fun AppNavigation(movieViewModel: MovieViewModel) {
 
             ) {
                 composable(MovieNavigation.Home.route) {
-                    MovieListView(navController, movies = movies)
+                    MovieListView(navController, movies = movies, movieViewModel)
                 }
                 composable(MovieNavigation.Add.route) {
                     AddNewMovie(movieViewModel)

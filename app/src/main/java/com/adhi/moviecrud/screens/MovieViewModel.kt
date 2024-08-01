@@ -24,6 +24,16 @@ class MovieViewModel @Inject constructor(private val repository: MovieRepository
 
     var newMovieTitle by mutableStateOf("")
 
+    val selectedMovieIDs = mutableSetOf<Int>()
+
+    fun onMovieSelected(movieID: Int, isSelected: Boolean) {
+        if (isSelected) {
+            selectedMovieIDs.add(movieID)
+        } else {
+            selectedMovieIDs.remove(movieID)
+        }
+    }
+
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -59,6 +69,19 @@ class MovieViewModel @Inject constructor(private val repository: MovieRepository
     fun deleteMovie(movie: Movie) {
         viewModelScope.launch {
             repository.deleteMovie(movie)
+        }
+    }
+
+    fun deleteSelectedMovies() {
+        //delete selected movies from the database using selectedMovieIDs
+        viewModelScope.launch {
+            selectedMovieIDs.forEach { movieID ->
+                val movie = getMovie(movieID)
+                if (movie != null) {
+                    repository.deleteMovie(movie)
+                }
+            }
+            selectedMovieIDs.clear()
         }
     }
 }
